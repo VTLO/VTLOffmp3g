@@ -6,7 +6,8 @@ const ICONS = {
   convert: "M6.99,11L3,15l3.99,4v-3H14v-2H6.99v-3zM21,9l-3.99,-4v3H10v2h7.01v3L21,9z",
   audio: "M12,3v10.55c-0.59,-0.34 -1.27,-0.55 -2,-0.55 -2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4V7h4V3h-6z",
   edit: "M17,15h2V7c0,-1.1 -0.9,-2 -2,-2H9v2h8v8zM7,17V1H5v4H1v2h4v10c0,1.1 0.9,2 2,2h10v4h2v-4h4v-2H7z",
-  frames: "M21,19V5c0,-1.1 -0.9,-2 -2,-2H5c-1.1,0 -2,0.9 -2,2v14c0,1.1 0.9,2 2,2h14c1.1,0 2,-0.9 2,-2zM8.5,13.5l2.5,3.01L14.5,12l4.5,6H5l3.5,-4.5z",
+  effects: "M19,9l1.25,-2.75L23,5l-2.75,-1.25L19,1l-1.25,2.75L15,5l2.75,1.25L19,9zM11.5,9.5L9,4L6.5,9.5L1,12l5.5,2.5L9,20l2.5,-5.5L17,12L11.5,9.5zM19,15l-1.25,2.75L15,19l2.75,1.25L19,23l1.25,-2.75L23,19l-2.75,-1.25L19,15z",
+  inspect: "M19,3H5c-1.1,0 -2,0.9 -2,2v14c0,1.1 0.9,2 2,2h14c1.1,0 2,-0.9 2,-2V5c0,-1.1 -0.9,-2 -2,-2zM9,17H7v-7h2v7zM13,17h-2V7h2v10zM17,17h-2v-4h2v4z",
   arrow: "M12,4l-1.41,1.41L16.17,11H4v2h12.17l-5.58,5.59L12,20l8,-8z",
   chevron: "M10,6L8.59,7.41 13.17,12l-4.58,4.59L10,18l6,-6z",
   play: "M8,5v14l11,-7z",
@@ -27,10 +28,11 @@ const ICONS = {
 const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]}"/></svg>`;
 
 const TABS = [
-  { id: "convert", label: "Convert", sections: ["Transcode", "Compression & quality"] },
-  { id: "audio", label: "Audio", sections: ["Audio"] },
-  { id: "edit", label: "Edit", sections: ["Cut & join", "Scale, crop, overlay", "GIF"] },
-  { id: "frames", label: "Frames", sections: ["Frames & streaming", "Custom"] },
+  { id: "convert", label: "Convert", sections: ["Transcode", "Compression & quality", "Delivery"] },
+  { id: "audio", label: "Audio", sections: ["Audio", "Audio clean-up & mix"] },
+  { id: "edit", label: "Edit", sections: ["Cut & join", "Speed & time", "Scale, crop, overlay", "GIF"] },
+  { id: "effects", label: "Effects", sections: ["Picture & colour", "Text & overlays"] },
+  { id: "inspect", label: "Inspect", sections: ["Frames & streaming", "Analysis", "Custom"] },
 ];
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -53,6 +55,19 @@ function applyParams(template, values) {
   for (const [k, v] of Object.entries(values)) s = s.split("{" + k + "}").join(v);
   return s;
 }
+/**
+ * libass in the browser has no font provider: it only knows the bundled font, and draws nothing
+ * when asked for the default Arial. Point every subtitles filter at /fonts and name the font.
+ */
+function bundledFont(arg) {
+  return arg.replace(/subtitles=<(\w+)>(:force_style='([^']*)')?/g, (_, key, style, rules) =>
+    `subtitles=<${key}>:fontsdir=/fonts:force_style='FontName=DejaVu Sans${rules ? "," + rules : ""}'`);
+}
+
+/** Text files a recipe writes next to the inputs (subtitles for titles…): key -> [file name, text]. */
+function generatedFiles(r, values) {
+  return Object.fromEntries((r.generated || []).map((g) => [g.key, [g.fileName, applyParams(g.template, values)]]));
+}
 function defaults(r) {
   const v = {};
   for (const p of r.params) v[p.key] = p.default;
@@ -64,6 +79,7 @@ function buildCommand(r, values) {
 function badge(r) {
   if (r.outputKind === "NONE") return "FLV";
   if (r.outputKind === "DIRECTORY") return "JPG";
+  if (r.outputKind === "REPORT") return "INFO";
   return applyParams(r.outputExt, defaults(r)).toUpperCase();
 }
 function webSupported(r) {
@@ -250,8 +266,10 @@ function presetArgs(args) {
 let jobCounter = 0;
 
 class Job {
-  constructor(recipe, picks, commandText, outputName) {
+  constructor(recipe, picks, generated, commandText, outputName) {
     this.recipe = recipe;
+    this.generated = generated; // key -> [file name, text], e.g. the subtitles of a title
+
     this.picks = picks;
     this.commandText = commandText;
     this.outputName = outputName;
@@ -338,8 +356,12 @@ class Job {
           await ff.writeFile(`${d}/list.txt`, new TextEncoder().encode(list));
           paths.list = `${d}/list.txt`;
         } else {
-          paths[input.key] = input.key === "subs" ? `${written[0]}:fontsdir=/fonts` : written[0];
+          paths[input.key] = written[0];
         }
+      }
+      for (const [key, [fileName, text]] of Object.entries(this.generated)) {
+        await ff.writeFile(`${d}/${fileName}`, new TextEncoder().encode(text));
+        paths[key] = `${d}/${fileName}`;
       }
       const kind = this.recipe.outputKind;
       if (kind === "DIRECTORY") await ff.createDir(`${d}/frames`);
@@ -352,7 +374,7 @@ class Job {
       for (let i = 0; i < lines.length; i++) {
         let args = parseArguments(lines[i]);
         if (args[0] === "ffmpeg") args = args.slice(1);
-        args = presetArgs(args).map((a) => a.replace(/<(\w+)>/g, (_, name) => {
+        args = presetArgs(args).map(bundledFont).map((a) => a.replace(/<(\w+)>/g, (_, name) => {
           if (!(name in paths)) throw new Error(`Pick a file for <${name}> first`);
           return paths[name];
         }));
@@ -380,7 +402,7 @@ class Job {
       }
       this.size = this.outputs.reduce((n, o) => n + o.blob.size, 0);
       this.time = this.duration || this.time;
-      this.finish("DONE", "Done");
+      this.finish("DONE", kind === "REPORT" ? "Report ready — read the log" : "Done");
     } catch (e) {
       if (this.state === "CANCELLED") return;
       this.onLog("ERROR: " + (e && e.message ? e.message : e));
@@ -663,7 +685,7 @@ function startJob(r) {
   const ext = (applyParams(r.outputExt, f.values).replace(/[^A-Za-z0-9]/g, "").toLowerCase()) || "out";
   const name = r.outputKind === "DIRECTORY" ? base + "_frames" : base + "." + ext;
   const picks = Object.fromEntries(Object.entries(f.picks).map(([k, v]) => [k, [...v]]));
-  job = new Job(r, picks, text, name);
+  job = new Job(r, picks, generatedFiles(r, f.values), text, name);
   job.listeners.add(() => route(true));
   job.run();
   renderJob(r);
@@ -699,8 +721,12 @@ function renderJob(r) {
       break;
     case "DONE":
       set("verdict", "Done"); set("score", "100");
-      set("pillLabel", "Size"); set("pill", fmtBytes(mine.size));
-      set("detail", mine.outputs.map((o) => o.name + (o.count ? ` (${o.count} frames)` : "")).join("\n"));
+      if (r.outputKind === "REPORT") {
+        set("pillLabel", "Report"); set("pill", "in log"); set("detail", mine.status);
+      } else {
+        set("pillLabel", "Size"); set("pill", fmtBytes(mine.size));
+        set("detail", mine.outputs.map((o) => o.name + (o.count ? ` (${o.count} frames)` : "")).join("\n"));
+      }
       break;
     case "CANCELLED":
       color = "#ffaa0d"; set("verdict", "Stopped"); set("score", p < 0 ? "–" : Math.round(p * 100));
@@ -722,7 +748,9 @@ function renderJob(r) {
   if (atBottom) logEl.scrollTop = logEl.scrollHeight;
 
   const result = $("#result");
-  if (mine.state === "DONE" && !result.dataset.ready) {
+  if (mine.state === "DONE" && !mine.outputs.length) {
+    result.hidden = true; // a report: the answer is in the log
+  } else if (mine.state === "DONE" && !result.dataset.ready) {
     result.dataset.ready = "1";
     result.hidden = false;
     const out = mine.outputs[0];
@@ -753,7 +781,7 @@ const GUIDE = [
   },
   {
     title: "Choisissez une recette",
-    text: "Quatre onglets : Convert, Audio, Edit, Frames. Ou cherchez directement un format : mp3, gif, webm…",
+    text: "Cinq onglets : Convert, Audio, Edit, Effects, Inspect. Ou cherchez directement un format : mp3, gif, webm…",
     art: () => `<div style="width:340px">
       <div style="background:#fff;border-radius:4px;padding:12px 16px;color:#111;font-size:17px;height:46px"><span class="g-type">webm</span></div>
       ${[["MP4 → WebM (VP9 + Opus)", "WEBM"], ["Extraire l'audio en MP3", "MP3"], ["Vidéo → GIF optimisé", "GIF"]].map(([t, b], i) => `

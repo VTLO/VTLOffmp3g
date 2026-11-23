@@ -34,6 +34,13 @@ public class ExportRecipes {
                 if (j > 0) sb.append(',');
                 sb.append(str(steps.get(j)));
             }
+            sb.append("],\"generated\":[");
+            for (int j = 0; j < r.generated.size(); j++) {
+                Recipe.Generated g = r.generated.get(j);
+                if (j > 0) sb.append(',');
+                sb.append('{').append(kv("key", g.key)).append(',').append(kv("fileName", g.fileName)).append(',')
+                    .append(kv("template", g.template)).append('}');
+            }
             sb.append("]}").append(i < Recipe.ALL.size() - 1 ? ",\n" : "\n");
         }
         sb.append("]\n");

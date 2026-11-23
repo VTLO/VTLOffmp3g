@@ -13,9 +13,9 @@
 
 > Faites faire à FFmpeg tout ce dont vous avez besoin, sans taper une seule commande.
 
-VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : les 24 commandes essentielles de la
-[cheatsheet FFmpeg](tools/ffmpeg.sh) deviennent des **recettes prêtes à l'emploi**, sur téléphone Android comme
-sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
+VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : les commandes essentielles de la
+[cheatsheet FFmpeg](tools/ffmpeg.sh) et les travaux de montage du quotidien deviennent **84 recettes prêtes à
+l'emploi**, sur téléphone Android comme sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
 appareil, hors ligne, sans envoyer un seul octet sur Internet**. Et pour ceux qui veulent garder la main, la
 commande FFmpeg reste visible et modifiable à chaque étape.
 
@@ -27,9 +27,9 @@ commande FFmpeg reste visible et modifiable à chaque étape.
 
 | Plateforme | Fichier | Taille |
 |---|---|---|
-| **Android** 7+ (téléphones récents, ARM 64 bits) | [`VTLOffmp3g-1.4-arm64-v8a.apk`](downloads/VTLOffmp3g-1.4-arm64-v8a.apk) | 46 Mo |
-| **Android** 7+ (anciens téléphones 32 bits) | [`VTLOffmp3g-1.4-armeabi-v7a.apk`](downloads/VTLOffmp3g-1.4-armeabi-v7a.apk) | 46 Mo |
-| **PC** Windows · macOS · Linux (navigateur) | [`VTLOffmp3g-web-1.4.zip`](downloads/VTLOffmp3g-web-1.4.zip) | 10 Mo |
+| **Android** 7+ (téléphones récents, ARM 64 bits) | [`VTLOffmp3g-1.5-arm64-v8a.apk`](downloads/VTLOffmp3g-1.5-arm64-v8a.apk) | 48 Mo |
+| **Android** 7+ (anciens téléphones 32 bits) | [`VTLOffmp3g-1.5-armeabi-v7a.apk`](downloads/VTLOffmp3g-1.5-armeabi-v7a.apk) | 48 Mo |
+| **PC** Windows · macOS · Linux (navigateur) | [`VTLOffmp3g-web-1.5.zip`](downloads/VTLOffmp3g-web-1.5.zip) | 11 Mo |
 
 - **Android** : ouvrez l'APK sur le téléphone et autorisez l'installation depuis cette source.
 - **PC** : décompressez le zip, puis double-cliquez `Lancer-VTLOffmp3g.bat` (Windows) ou lancez `./lancer.sh`
@@ -39,7 +39,12 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 
 ## ✨ Fonctionnalités 
 
-- **24 recettes** issues de la cheatsheet, regroupées en quatre onglets : *Convertir*, *Audio*, *Montage*, *Images*.
+- **84 recettes** en cinq onglets : *Convertir*, *Audio*, *Montage*, *Effets*, *Analyse*.
+- **Montage du quotidien** : vitesse, ralenti fluide, fondus, transitions, formats verticaux 9:16, titres et
+  bandeaux nom/fonction, incrustation, fond vert, LUT, HDR → SDR, normalisation du volume (LUFS), voix
+  nettoyée, musique qui s'efface sous la voix, exports YouTube et Reels/TikTok/Shorts…
+- **Analyse** : infos du fichier, bandes noires, changements de plan, volume EBU R128, silences, qualité
+  SSIM/PSNR ; le résultat s'affiche dans le journal.
 - **Recherche** par nom, codec ou format (`mp3`, `gif`, `webm`…).
 - **Paramètres simples** (qualité CRF, débit, début et durée, taille, position du filigrane…) et
   **commande FFmpeg éditable** pour les utilisateurs avancés.
@@ -59,18 +64,28 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 4. **Lancez** : la jauge, la télémétrie et le journal se mettent à jour en direct.
 5. **Récupérez le résultat** : enregistrer, partager, ouvrir ou télécharger.
 
-## 🎬 Les 24 recettes
+## 🎬 Les 84 recettes
 
-| Catégorie | Recettes |
-|---|---|
-| **Conversion** | Tout format → MP4 (H.264 + AAC) · MP4 → WebM (VP9 + Opus) · MP4 → WebM (VP8, presets libvpx) · Remux sans réencodage |
-| **Compression** | Compression CRF · Preset lent (fichier plus petit) · Encodage deux passes (débit cible) |
-| **Audio** | Extraire en MP3 · Extraire en M4A (AAC) · Extraire sans réencodage · Remplacer la piste audio |
-| **GIF** | Vidéo → GIF optimisé (palette en deux étapes) |
-| **Découpe et assemblage** | Découpe rapide · Découpe à l'image près · Assemblage sans perte |
-| **Taille, recadrage, incrustation** | Taille exacte · Largeur fixe en gardant les proportions · Recadrage · Filigrane · Sous-titres incrustés |
-| **Images et diffusion** | Image fixe (miniature) · Une image par seconde · Diffusion RTMP *(Android)* |
-| **Libre** | Commande FFmpeg personnalisée |
+| Onglet | Catégorie | Recettes |
+|---|---|---|
+| **Convertir** | **Conversion** | Tout format → MP4 (H.264 + AAC) · MP4 → WebM (VP9 + Opus) · MP4 → WebM (VP8, presets libvpx) · Remux sans réencodage |
+| | **Compression** | Compression CRF · Preset lent (fichier plus petit) · Encodage deux passes (débit cible) |
+| | **Diffusion** *(nouveau)* | Export YouTube · Export Reels / TikTok / Shorts · Master ProRes · Fichier proxy léger · Réparer un enregistrement corrompu · Photo → clip (effet Ken Burns) · Clip de couleur unie · Mosaïque 2×2 · Deux vidéos côte à côte · Titre / artiste / commentaire |
+| **Audio** | **Audio** | Extraire en MP3 · Extraire en M4A (AAC) · Extraire sans réencodage · Remplacer la piste audio |
+| | **Nettoyage et mixage** *(nouveau)* | Normaliser le volume (LUFS) · Nettoyer une voix · Musique sous la voix (ducking) · 5.1 → stéréo · Stéréo élargie · Couper le son · Compresseur + limiteur · Supprimer les silences · Audiogramme (podcast → vidéo) · Vidéo de forme d'onde · Image de forme d'onde |
+| **Montage** | **Découpe et assemblage** | Découpe rapide · Découpe à l'image près · Assemblage sans perte · Supprimer un passage · Transition entre deux clips · Plan de coupe (B-roll) |
+| | **Vitesse et temps** *(nouveau)* | Vitesse (hauteur de voix conservée) · Ralenti fluide · Figer la dernière image · Lecture à l'envers · Boucle · Noir au début · Fondus d'entrée et de sortie |
+| | **Taille, recadrage, incrustation** | Taille exacte · Largeur fixe en gardant les proportions · Recadrage · Filigrane · Sous-titres incrustés |
+| | **GIF** | Vidéo → GIF optimisé (palette en deux étapes) |
+| **Effets** *(nouveau)* | **Image et couleur** | Vertical 9:16 (recadré, bandes, fond flou) · Rotation 90° · Miroir · Redresser l'horizon · Vidéo 360° → vue plate · Désentrelacer · Réduire le grain · Stabiliser · Netteté · Correction colorimétrique · LUT 3D (.cube) · HDR → SDR · Pixeliser / flouter une zone · Effacer un logo |
+| | **Texte et incrustations** | Titre · Bandeau nom + fonction · Texte façon mème · Image dans l'image · Fond vert · Sous-titres activables |
+| **Analyse** | **Images et diffusion** | Image fixe (miniature) · Une image par seconde · Diffusion RTMP *(Android)* |
+| | **Analyse** *(nouveau)* | Infos du fichier · Détecter les bandes noires · Détecter les changements de plan · Mesurer le volume (EBU R128) · Trouver les silences · Comparer la qualité (SSIM / PSNR) |
+| | **Libre** | Commande FFmpeg personnalisée |
+
+Les recettes *nouvelles* reprennent les fonctions de [ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill)
+réalisables avec FFmpeg seul (sans Python ni IA), adaptées pour tourner à l'identique sur Android et dans le
+navigateur.
 
 ## 🗂️ Organisation
 
@@ -79,7 +94,7 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 | [`apps/VTLOffmp3g`](apps/VTLOffmp3g) | Application Android (Java, FFmpegKit full-gpl 6.1, Android 7+) |
 | [`apps/VTLOffmp3g-web`](apps/VTLOffmp3g-web) | Application PC dans le navigateur (ffmpeg.wasm, FFmpeg 5.1) ; `dist/` prêt à l'emploi |
 | [`downloads/`](downloads) | APK et zip PC prêts à installer |
-| [`tools/ffmpeg.sh`](tools/ffmpeg.sh) | La cheatsheet FFmpeg d'origine des recettes |
+| [`tools/ffmpeg.sh`](tools/ffmpeg.sh) | La cheatsheet FFmpeg à l'origine des premières recettes |
 | [`assets/`](assets) | Bannière et aperçu de ce README |
 | [`.github/workflows`](.github/workflows) | Construction et vérification des APK, publication web sur GitHub Pages |
 
@@ -115,6 +130,8 @@ VTLOffmp3g est distribué sous **GNU GPL v3** ([`LICENSE`](LICENSE)) : FFmpeg, t
 
 - [`tools/ffmpeg.sh`](tools/ffmpeg.sh) provient d'[awesome-cheatsheets](https://github.com/LeCoupa/awesome-cheatsheets),
   sous licence MIT ([`tools/LICENSE-ffmpeg.sh.txt`](tools/LICENSE-ffmpeg.sh.txt)).
+- Recettes inspirées d'[ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill) (licence MIT) : commandes
+  réécrites pour VTLOffmp3g, aucun fichier repris.
 - Police DejaVu Sans (version PC) : licence Bitstream Vera.
 
 <p align="center"><sub>ɔ copyleft · GPL-3.0 · VTLO</sub></p>

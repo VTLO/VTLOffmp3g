@@ -282,7 +282,7 @@ public class RecipeActivity extends AppCompatActivity implements Job.Listener {
             }
         }
         try {
-            attach(Job.start(this, recipe, copyPicks(), text, outputName()));
+            attach(Job.start(this, recipe, copyPicks(), recipe.generatedFiles(values), text, outputName()));
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -380,8 +380,9 @@ public class RecipeActivity extends AppCompatActivity implements Job.Listener {
                 status.setText("Done");
                 gauge.setProgress(1);
                 score.setText("100");
-                pillLabel.setText("Size");
-                pill.setText(job.output == null ? "stream" : describeSize(job.output));
+                pillLabel.setText(recipe.outputKind == Recipe.OutputKind.REPORT ? "Report" : "Size");
+                pill.setText(recipe.outputKind == Recipe.OutputKind.REPORT ? "in log"
+                    : job.output == null ? "stream" : describeSize(job.output));
                 detail.setText(job.output == null ? job.status() : job.output.getName());
                 break;
             case CANCELLED:

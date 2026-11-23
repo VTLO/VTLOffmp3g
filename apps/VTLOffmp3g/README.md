@@ -1,22 +1,32 @@
 # VTLOffmp3g
 
 Android app that runs every command of [`tools/ffmpeg.sh`](../../tools/ffmpeg.sh) on the phone,
-powered by an FFmpegKit *full-gpl* build (libx264, libvpx, libopus, libmp3lame, libass…).
+plus the everyday editing jobs of [ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill) (84 recipes
+in all), powered by an FFmpegKit *full-gpl* build (libx264, libvpx, libopus, libmp3lame, libass…).
 
 | Cheatsheet section    | In the app                                                                 |
 |-----------------------|----------------------------------------------------------------------------|
-| Transcode             | Anything → MP4, MP4 → WebM, Remux                                          |
-| Compression & quality | CRF, slow preset, two-pass (both passes run in sequence)                   |
-| Audio                 | Extract MP3 / M4A / stream copy, replace audio track                       |
-| GIF                   | Palette generation + palette use (two steps, one tap)                      |
-| Cut & join            | Fast cut, frame-accurate cut, concat (list file generated for you)         |
-| Scale, crop, overlay  | Exact scale, scale by width, crop, watermark, burned-in subtitles          |
-| Frames & streaming    | Poster frame, frame dump (saved to a folder), push to RTMP                 |
-| Custom                | Any ffmpeg command you type                                                |
+| Tab     | Section               | In the app                                                                 |
+|---------|-----------------------|----------------------------------------------------------------------------|
+| Convert | Transcode             | Anything → MP4, MP4 → WebM, Remux                                          |
+|         | Compression & quality | CRF, slow preset, two-pass (both passes run in sequence)                   |
+|         | Delivery              | YouTube, Reels/TikTok/Shorts, ProRes master, proxy, repair, photo → clip (Ken Burns), colour clip, 2×2 grid, side by side, tags |
+| Audio   | Audio                 | Extract MP3 / M4A / stream copy, replace audio track                       |
+|         | Audio clean-up & mix  | Loudness (LUFS), voice clean-up, music ducking, 5.1 → stereo, wider stereo, mute, compressor + limiter, remove silences, audiogram, waveform video / image |
+| Edit    | Cut & join            | Fast cut, frame-accurate cut, concat, remove a section, transitions (xfade), B-roll cutaway |
+|         | Speed & time          | Speed with pitch kept, smooth slow motion, freeze last frame, reverse, loop, black lead-in, fades |
+|         | Scale, crop, overlay  | Exact scale, scale by width, crop, watermark, burned-in subtitles          |
+|         | GIF                   | Palette generation + palette use (two steps, one tap)                      |
+| Effects | Picture & colour      | Vertical 9:16 (crop / bars / blurred background), rotate, mirror, straighten, 360° → flat, deinterlace, denoise, stabilise, sharpen, colour correction, 3D LUT, HDR → SDR, pixelate / blur a region, remove a logo |
+|         | Text & overlays       | Title, lower third, meme text, picture-in-picture, green screen, switchable subtitles |
+| Inspect | Frames & streaming    | Poster frame, frame dump (saved to a folder), push to RTMP                 |
+|         | Analysis              | Media info, black bars, scene changes, loudness (EBU R128), silences, SSIM / PSNR — results in the log |
+|         | Custom                | Any ffmpeg command you type                                                |
 
 Each screen lets you pick the input files, edit the parameters (CRF, bitrate, times, sizes…),
 and edit the final command itself. `<input>`, `<output>`, `<audio>`, `<logo>`… are replaced by
-your files when the job runs. Results can be saved anywhere (Storage Access Framework), shared,
+your files when the job runs; text recipes write their subtitle file (`<title>`…) from your
+parameters. Results can be saved anywhere (Storage Access Framework), shared,
 or opened. Long encodes keep running in the background with a progress notification.
 
 ## Build
@@ -44,7 +54,7 @@ Checks (also run in CI):
 
 ```sh
 ./gradlew testDebugUnitTest                  # every screen starts (Robolectric)
-./gradlew connectedDebugAndroidTest          # on a device/emulator: runs all 23 recipes for real
+./gradlew connectedDebugAndroidTest          # on a device/emulator: runs every recipe for real
 python3 tools/check_native_libs.py "$ANDROID_HOME/ndk/27.2.12479018" 24 app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
 python3 tools/check_alignment.py app/build/outputs/apk/*/*.apk
 ```

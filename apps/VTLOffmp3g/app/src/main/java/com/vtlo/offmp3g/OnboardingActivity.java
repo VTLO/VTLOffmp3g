@@ -192,7 +192,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private Scene recipes() {
         Scene s = new Scene("Choisissez une recette",
-            "Quatre onglets : Convertir, Audio, Montage, Images. Ou cherchez un format : mp3, gif, webm…");
+            "Cinq onglets : Convertir, Audio, Montage, Effets, Analyse. Ou cherchez un format : mp3, gif, webm…");
         LinearLayout col = column();
         TextView search = text("", 17, color(R.color.search_text), false);
         search.setBackground(pill(color(R.color.search_bg), dp(4)));

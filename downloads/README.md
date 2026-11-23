@@ -1,23 +1,23 @@
-# Téléchargements VTLOffmp3g 1.4
+# Téléchargements VTLOffmp3g 1.5
 
-Toutes les commandes de [`tools/ffmpeg.sh`](../tools/ffmpeg.sh), prêtes à l'emploi, sur téléphone et sur PC.
+84 recettes FFmpeg prêtes à l'emploi (la cheatsheet [`tools/ffmpeg.sh`](../tools/ffmpeg.sh) et le montage du quotidien), sur téléphone et sur PC.
 Au premier lancement, un court guide animé en français explique comment s'en servir.
 
 | Fichier | Pour | Taille |
 |---|---|---|
-| [`VTLOffmp3g-1.4-arm64-v8a.apk`](VTLOffmp3g-1.4-arm64-v8a.apk) | Téléphones Android récents (Pixel, Samsung…, Android 7 et plus) | 46 Mo |
-| [`VTLOffmp3g-1.4-armeabi-v7a.apk`](VTLOffmp3g-1.4-armeabi-v7a.apk) | Anciens téléphones Android 32 bits | 46 Mo |
-| [`VTLOffmp3g-web-1.4.zip`](VTLOffmp3g-web-1.4.zip) | PC (Windows, macOS, Linux), dans le navigateur | 10 Mo |
+| [`VTLOffmp3g-1.5-arm64-v8a.apk`](VTLOffmp3g-1.5-arm64-v8a.apk) | Téléphones Android récents (Pixel, Samsung…, Android 7 et plus) | 48 Mo |
+| [`VTLOffmp3g-1.5-armeabi-v7a.apk`](VTLOffmp3g-1.5-armeabi-v7a.apk) | Anciens téléphones Android 32 bits | 48 Mo |
+| [`VTLOffmp3g-web-1.5.zip`](VTLOffmp3g-web-1.5.zip) | PC (Windows, macOS, Linux), dans le navigateur | 11 Mo |
 
 ## Android
 
-1. Téléchargez `VTLOffmp3g-1.4-arm64-v8a.apk` sur le téléphone (bouton **Download raw file** de GitHub).
+1. Téléchargez `VTLOffmp3g-1.5-arm64-v8a.apk` sur le téléphone (bouton **Download raw file** de GitHub).
 2. Ouvrez-le et autorisez l'installation d'applications depuis cette source si Android le demande.
-3. Si une ancienne version est installée, la 1.4 s'installe par-dessus.
+3. Si une ancienne version est installée, la 1.5 s'installe par-dessus.
 
 ## PC
 
-1. Téléchargez `VTLOffmp3g-web-1.4.zip` et décompressez-le.
+1. Téléchargez `VTLOffmp3g-web-1.5.zip` et décompressez-le.
 2. Dans le dossier `VTLOffmp3g-web` :
    - **Windows** : double-cliquez `Lancer-VTLOffmp3g.bat`.
    - **macOS / Linux** : lancez `./lancer.sh` (nécessite Python 3).
@@ -30,9 +30,9 @@ disponible que dans l'application Android.
 ## Empreintes SHA-256
 
 ```
-68ffde64b6134915ce22aa8247f0cc5a90a567f1085a1f9572407af88d3fd6bf  VTLOffmp3g-1.4-arm64-v8a.apk
-91ee1d0ad9ca1ef9cdb8022ac1454b7116f613396153840ce40975afcc9cbf48  VTLOffmp3g-1.4-armeabi-v7a.apk
-c776e1827301421e899bc5dccda1e1511b746d20929f3fd1245f7778ae5b132d  VTLOffmp3g-web-1.4.zip
+bf042ad657507a084b5786e1ac3113c42b0e6a0b5de07ebe06cbd8cc46c262e6  VTLOffmp3g-1.5-arm64-v8a.apk
+b50adcafe51bffbb33b1bc91c5bd239fba1253055c695f3c58a01067ff80f22b  VTLOffmp3g-1.5-armeabi-v7a.apk
+0ec2f6e473c57b3bdff8e452416f4e64650dfb7dfe03f0ca8ffa0e84df4abc90  VTLOffmp3g-web-1.5.zip
 ```
 
 Les APK sont signés avec une clé de développement : ils s'installent directement mais ne sont pas destinés au

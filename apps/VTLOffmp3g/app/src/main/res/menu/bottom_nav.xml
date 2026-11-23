@@ -3,5 +3,6 @@
     <item android:id="@+id/tab_convert" android:icon="@drawable/ic_convert" android:title="Convert" />
     <item android:id="@+id/tab_audio" android:icon="@drawable/ic_audio" android:title="Audio" />
     <item android:id="@+id/tab_edit" android:icon="@drawable/ic_edit" android:title="Edit" />
-    <item android:id="@+id/tab_frames" android:icon="@drawable/ic_frames" android:title="Frames" />
+    <item android:id="@+id/tab_effects" android:icon="@drawable/ic_effects" android:title="Effects" />
+    <item android:id="@+id/tab_inspect" android:icon="@drawable/ic_inspect" android:title="Inspect" />
 </menu>

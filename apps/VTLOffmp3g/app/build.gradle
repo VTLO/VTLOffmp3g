@@ -11,8 +11,8 @@ android {
         applicationId 'com.vtlo.offmp3g'
         minSdk 24
         targetSdk 35
-        versionCode 5
-        versionName '1.4'
+        versionCode 6
+        versionName '1.5'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -49,6 +49,8 @@ android {
             all {
                 // Skip loading FFmpegKit's native libraries on the JVM.
                 systemProperty 'enable.ffmpeg.kit.test.mode', 'true'
+                // Native graphics and one screen per recipe need more than the 512 MB default.
+                maxHeapSize = '2g'
             }
         }
     }

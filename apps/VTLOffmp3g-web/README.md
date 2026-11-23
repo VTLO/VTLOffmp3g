@@ -1,6 +1,6 @@
 # VTLOffmp3g pour PC (application web)
 
-La version navigateur de VTLOffmp3g : les mêmes 24 recettes que l'application Android (exportées depuis
+La version navigateur de VTLOffmp3g : les mêmes 84 recettes que l'application Android (exportées depuis
 `../VTLOffmp3g/app/src/main/java/com/vtlo/offmp3g/Recipe.java`), le même design, et le même guide animé en
 français au premier lancement. FFmpeg 5.1 tourne dans le navigateur grâce à
 [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) : les fichiers ne quittent jamais l'ordinateur.
@@ -8,7 +8,7 @@ français au premier lancement. FFmpeg 5.1 tourne dans le navigateur grâce à
 ## Utiliser
 
 Le dossier [`dist/`](dist/) contient l'application prête à l'emploi (aussi disponible en
-[zip](../../downloads/VTLOffmp3g-web-1.4.zip)).
+[zip](../../downloads/VTLOffmp3g-web-1.5.zip)).
 
 - **Windows** : double-cliquez `dist/Lancer-VTLOffmp3g.bat` (petit serveur PowerShell intégré à Windows, rien à installer).
 - **macOS / Linux** : `dist/lancer.sh` (Python 3).
@@ -24,6 +24,7 @@ Le dossier [`dist/`](dist/) contient l'application prête à l'emploi (aussi dis
 - La jauge, la télémétrie (fps et débit) et le journal se mettent à jour pendant l'encodage.
 - Le résultat s'affiche en aperçu (vidéo, audio, image) avec un bouton **Download**. Les captures d'images
   (recette *Dump frames*) sont regroupées dans un `.zip`.
+- Les recettes d'analyse (*Inspect*) n'ont pas de fichier de sortie : le résultat est à la fin du journal.
 - Différences avec Android : le streaming RTMP n'est pas possible depuis une page web, et les presets libvpx sont
   chargés avec `-fpre` (ffmpeg.wasm n'a pas de dossier de presets), ce qui est fait automatiquement.
 - Les fichiers sont traités en mémoire : comptez ~1 à 2 Go maximum par fichier.
