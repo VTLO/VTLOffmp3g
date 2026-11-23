@@ -12,7 +12,6 @@
 # ∇TLO · VTLOffmp3g
 
 > Faites faire à FFmpeg tout ce dont vous avez besoin, sans taper une seule commande.
-> Gardez le terminal pour le jour où vous en aurez vraiment envie.
 
 VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : les 24 commandes essentielles de la
 [cheatsheet FFmpeg](tools/ffmpeg.sh) deviennent des **recettes prêtes à l'emploi**, sur téléphone Android comme
@@ -38,7 +37,7 @@ commande FFmpeg reste visible et modifiable à chaque étape.
 
 Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 
-## ✨ Ce que ça fait
+## ✨ Fonctionnalités 
 
 - **24 recettes** issues de la cheatsheet, regroupées en quatre onglets : *Convertir*, *Audio*, *Montage*, *Images*.
 - **Recherche** par nom, codec ou format (`mp3`, `gif`, `webm`…).
