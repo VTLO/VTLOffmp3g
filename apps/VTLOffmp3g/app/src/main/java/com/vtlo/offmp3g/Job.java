@@ -61,6 +61,8 @@ public final class Job {
     private final Context app;
     private final Map<String, List<Uri>> picks;
     private final String commandText;
+    /** Text files the recipe writes next to the inputs (subtitles for titles…): key → {name, text}. */
+    private Map<String, String[]> generated = new HashMap<>();
     private final Handler main = new Handler(Looper.getMainLooper());
     private final StringBuilder log = new StringBuilder();
     private final List<Listener> listeners = new ArrayList<>();
@@ -100,9 +102,15 @@ public final class Job {
 
     public static synchronized Job start(Context context, Recipe recipe, Map<String, List<Uri>> picks,
                                          String commandText, String outputName) {
+        return start(context, recipe, picks, new HashMap<>(), commandText, outputName);
+    }
+
+    public static synchronized Job start(Context context, Recipe recipe, Map<String, List<Uri>> picks,
+                                         Map<String, String[]> generated, String commandText, String outputName) {
         if (isRunning()) throw new IllegalStateException("A job is already running");
         if (current != null) deleteRecursive(current.dir);
         Job job = new Job(context, recipe, picks, commandText, outputName);
+        job.generated = new HashMap<>(generated);
         current = job;
         new Thread(job::run, "vtlo-ffmpeg-job").start();
         JobService.start(context);
@@ -269,7 +277,8 @@ public final class Job {
                 return;
             }
             timeMs = durationMs;
-            finish(State.DONE, recipe.outputKind == Recipe.OutputKind.NONE ? "Stream finished" : "Done");
+            finish(State.DONE, recipe.outputKind == Recipe.OutputKind.NONE ? "Stream finished"
+                : recipe.outputKind == Recipe.OutputKind.REPORT ? "Report ready — read the log" : "Done");
         } catch (Throwable e) {
             // Also catches native-library load errors so they are reported instead of crashing.
             appendLog("\nERROR: " + e + (e.getCause() != null ? "\nCaused by: " + e.getCause() : "") + "\n");
@@ -288,6 +297,13 @@ public final class Job {
     /** Copies the inputs that need a real path and writes the concat list. Returns key → path. */
     private Map<String, String> prepareInputs() throws IOException {
         Map<String, String> paths = new HashMap<>();
+        for (Map.Entry<String, String[]> g : generated.entrySet()) {
+            File f = new File(dir, g.getValue()[0]);
+            try (Writer w = new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)) {
+                w.write(g.getValue()[1]);
+            }
+            paths.put(g.getKey(), f.getAbsolutePath());
+        }
         for (Recipe.Input in : recipe.inputs) {
             List<Uri> uris = picks.get(in.key);
             if (!in.copy || uris == null || uris.isEmpty()) continue;
@@ -318,6 +334,10 @@ public final class Job {
         List<Uri> main = picks.get("input");
         if (main == null || main.isEmpty()) {
             main = picks.get("videos");
+        }
+        if ((main == null || main.isEmpty()) && !recipe.inputs.isEmpty()) {
+            // Recipes without an "input" (audiogram, waveform…): time progress on their first file.
+            main = picks.get(recipe.inputs.get(0).key);
         }
         if (main == null || main.isEmpty()) return;
         status = "Reading media info";

@@ -80,6 +80,20 @@ public class ScreenshotTest {
     }
 
     @Test
+    public void effectsTab() throws Exception {
+        MainActivity a = Robolectric.buildActivity(MainActivity.class).setup().get();
+        ((com.google.android.material.bottomnavigation.BottomNavigationView) a.findViewById(R.id.nav))
+            .setSelectedItemId(R.id.tab_effects);
+        capture(a, "8-home-effects");
+    }
+
+    @Test
+    public void reportDone() throws Exception {
+        fakeJob("measure_loudness", Job.State.DONE, 1, "Report ready — read the log");
+        capture(recipe("measure_loudness"), "9-report-done");
+    }
+
+    @Test
     public void onboarding() throws Exception {
         Activity a = Robolectric.buildActivity(OnboardingActivity.class).setup().get();
         androidx.viewpager2.widget.ViewPager2 pager = a.findViewById(R.id.pager);
@@ -118,7 +132,7 @@ public class ScreenshotTest {
         ctor.setAccessible(true);
         Recipe r = Recipe.byId(recipeId);
         Job job = ctor.newInstance(context, r, new HashMap<String, List<android.net.Uri>>(),
-            r.buildCommand(r.defaultParams()), "clip_" + recipeId + "." + MainActivity.badge(r).toLowerCase());
+            r.buildCommand(r.defaultParams()), "clip_" + recipeId + "." + MainActivity.badge(r).toLowerCase(java.util.Locale.US));
         set(job, "durationMs", 96_000d);
         set(job, "timeMs", 96_000d * progress);
         set(job, "speed", 1.84d);
@@ -140,8 +154,10 @@ public class ScreenshotTest {
             + "  Stream #0:0(und): Video: h264 (High), yuv420p, 1920x1080, 30 fps\n"
             + "Stream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))\n"
             + "frame= 1740 fps= 48 q=28.0 size=   22850kB time=00:00:58.00 bitrate=3227.5kbits/s speed=1.84x\n"
+            + (r.outputKind == Recipe.OutputKind.REPORT ? "\n[Parsed_ebur128_0] Summary:\n\n  Integrated loudness:\n    I:         -16.4 LUFS\n"
+                + "    Threshold: -26.9 LUFS\n\n  Loudness range:\n    LRA:         6.1 LU\n\n  True peak:\n    Peak:       -1.2 dBFS\n" : "")
             + (state == Job.State.FAILED ? "[Parsed_subtitles_0] Unable to open subs.srt\nError initializing filters\n" : ""));
-        if (state == Job.State.DONE) {
+        if (state == Job.State.DONE && get(job, "output") != null) {
             File out = (File) get(job, "output");
             try (FileOutputStream f = new FileOutputStream(out)) {
                 f.write(new byte[18_874]);

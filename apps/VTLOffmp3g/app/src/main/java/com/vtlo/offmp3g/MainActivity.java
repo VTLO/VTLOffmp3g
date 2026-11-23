@@ -35,12 +35,14 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements Job.Listener {
 
     /** Bottom tabs and the cheatsheet sections each one shows. */
-    private static final int[] TABS = {R.id.tab_convert, R.id.tab_audio, R.id.tab_edit, R.id.tab_frames};
-    private static final List<List<String>> TAB_SECTIONS = Arrays.asList(
-        Arrays.asList(Recipe.TRANSCODE, Recipe.COMPRESSION),
-        Arrays.asList(Recipe.AUDIO),
-        Arrays.asList(Recipe.CUT, Recipe.SCALE, Recipe.GIF),
-        Arrays.asList(Recipe.FRAMES, Recipe.CUSTOM));
+    private static final int[] TABS = {R.id.tab_convert, R.id.tab_audio, R.id.tab_edit, R.id.tab_effects,
+        R.id.tab_inspect};
+    static final List<List<String>> TAB_SECTIONS = Arrays.asList(
+        Arrays.asList(Recipe.TRANSCODE, Recipe.COMPRESSION, Recipe.DELIVERY),
+        Arrays.asList(Recipe.AUDIO, Recipe.AUDIO_FX),
+        Arrays.asList(Recipe.CUT, Recipe.SPEED, Recipe.SCALE, Recipe.GIF),
+        Arrays.asList(Recipe.PICTURE, Recipe.TEXT),
+        Arrays.asList(Recipe.FRAMES, Recipe.ANALYSIS, Recipe.CUSTOM));
 
     private final List<View> headers = new ArrayList<>();
     private final List<View> rows = new ArrayList<>();
@@ -267,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements Job.Listener {
         switch (r.outputKind) {
             case NONE: return "FLV";
             case DIRECTORY: return "JPG";
+            case REPORT: return "INFO";
             default: return Recipe.applyParams(r.outputExt, r.defaultParams()).toUpperCase(Locale.US);
         }
     }

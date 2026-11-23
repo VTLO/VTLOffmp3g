@@ -33,9 +33,9 @@ public class AllRecipesTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         media = new File(context.getCacheDir(), "jobs/test-media");
         media.mkdirs();
-        // 2 s 320x240 H.264/AAC clip, MP3, PNG logo and SRT subtitles (see androidTest/assets).
+        // 2 s 320x240 H.264/AAC clip, MP3, PNG logo, SRT subtitles and an identity .cube LUT (see androidTest/assets).
         android.content.res.AssetManager assets = InstrumentationRegistry.getInstrumentation().getContext().getAssets();
-        for (String name : new String[]{"input.mp4", "audio.mp3", "logo.png", "subs.srt"}) {
+        for (String name : new String[]{"input.mp4", "audio.mp3", "logo.png", "subs.srt", "identity.cube"}) {
             try (java.io.InputStream in = assets.open(name);
                  java.io.OutputStream out = new java.io.FileOutputStream(new File(media, name))) {
                 Job.copy(in, out);
@@ -77,9 +77,30 @@ public class AllRecipesTest {
         override(values, "y", "10");
         override(values, "width", "160");
         override(values, "height", "120");
-        override(values, "preset", "ultrafast");
+        if (!r.id.equals("webm_vpre")) override(values, "preset", "ultrafast");
         override(values, "url", path("stream.flv"));
+        // Times inside the 2 s clip for the editing recipes.
+        override(values, "offset", "1");
+        override(values, "from", "0.5");
+        override(values, "to", "1");
+        override(values, "at", "0.5");
+        override(values, "end", "1.5");
+        override(values, "outstart", "1.2");
+        override(values, "in", "0.5");
+        override(values, "out", "0.5");
+        override(values, "hold", "0.5");
+        override(values, "dur", "0.5");
+        override(values, "maxlen", "1");
+        override(values, "seconds", "2");
+        override(values, "size", "320x180");
+        override(values, "wh", "40");
         if (r.id.equals("to_webm")) values.put("vbitrate", "200k");
+        if (r.id.equals("title_text") || r.id.equals("lower_third")) {
+            values.put("start", "00:00:00,200");
+            values.put("end", "00:00:01,500");
+        }
+        if (r.id.equals("color_clip") || r.id.equals("image_clip") || r.id.equals("loop")) values.put("duration", "1");
+        if (r.id.equals("export_youtube") || r.id.equals("export_vertical")) values.put("preset", "ultrafast");
 
         Map<String, List<Uri>> picks = new HashMap<>();
         for (Recipe.Input in : r.inputs) {
@@ -89,6 +110,11 @@ public class AllRecipesTest {
                 case "audio": picks.put("audio", Arrays.asList(uri("audio.mp3"))); break;
                 case "logo": picks.put("logo", Arrays.asList(uri("logo.png"))); break;
                 case "subs": picks.put("subs", Arrays.asList(uri("subs.srt"))); break;
+                case "second": case "third": case "fourth": case "broll": case "pip": case "fg": case "reference":
+                    picks.put(in.key, Arrays.asList(uri("input.mp4"))); break;
+                case "music": picks.put("music", Arrays.asList(uri("audio.mp3"))); break;
+                case "image": picks.put("image", Arrays.asList(uri("logo.png"))); break;
+                case "lut": picks.put("lut", Arrays.asList(uri("identity.cube"))); break;
                 default: return "no test file for input " + in.key;
             }
         }
@@ -97,7 +123,7 @@ public class AllRecipesTest {
 
         Job[] job = new Job[1];
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() ->
-            job[0] = Job.start(context, r, picks, r.buildCommand(values), name));
+            job[0] = Job.start(context, r, picks, r.generatedFiles(values), r.buildCommand(values), name));
         long deadline = System.currentTimeMillis() + 10 * 60_000;
         while (job[0].state() == Job.State.RUNNING) {
             if (System.currentTimeMillis() > deadline) {
@@ -109,6 +135,9 @@ public class AllRecipesTest {
         if (job[0].state() != Job.State.DONE) {
             String log = job[0].log();
             return job[0].status() + "\n" + log.substring(Math.max(0, log.length() - 1500));
+        }
+        if (r.outputKind == Recipe.OutputKind.REPORT) {
+            return null; // ffmpeg exited cleanly; the report is the log itself.
         }
         if (r.outputKind == Recipe.OutputKind.NONE) {
             File stream = new File(media, "stream.flv");
