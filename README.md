@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="VTLOffmp3g · FFmpeg sans ligne de commande, partout où c'est possible" width="100%">
+  <img src="assets/banner.png" alt="VTLOffmp3g · FFmpeg sans ligne de commande, pré-automatisé" width="100%">
 </p>
 
 <p align="center">
@@ -11,11 +11,10 @@
 
 # ∇TLO · VTLOffmp3g
 
-> Faites faire à FFmpeg tout ce dont vous avez besoin, sans taper une seule commande.
+> L'édition audio/vidéo sans se casser la tête, pas besoin de taper une seule commande.
 
-VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : les commandes essentielles de la
-[cheatsheet FFmpeg](tools/ffmpeg.sh) et les travaux de montage du quotidien deviennent **84 runners ready to use**, sur téléphone Android comme sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
-appareil, hors ligne, sans envoyer un seul octet sur Internet**. Et pour ceux qui veulent garder la main, la
+VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : Les travaux de montage du quotidien deviennent **84 runners automatisés**, sur plateforme Android comme sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
+appareil, hors ligne, 100% LOCAL - sans envoyer un seul octet sur Internet**. Et pour ceux qui veulent garder la main, la
 commande FFmpeg reste visible et modifiable à chaque étape.
 
 <p align="center">
@@ -26,11 +25,11 @@ commande FFmpeg reste visible et modifiable à chaque étape.
 
 | Plateforme | Fichier | Taille |
 |---|---|---|
-| **Android** 7+ (téléphones récents, ARM 64 bits) | [`VTLOffmp3g-1.5-arm64-v8a.apk`](downloads/VTLOffmp3g-1.5-arm64-v8a.apk) | 48 Mo |
-| **Android** 7+ (anciens téléphones 32 bits) | [`VTLOffmp3g-1.5-armeabi-v7a.apk`](downloads/VTLOffmp3g-1.5-armeabi-v7a.apk) | 48 Mo |
+| **Android** 7+ (Smartphones récents, ARM 64 bits) | [`VTLOffmp3g-1.5-arm64-v8a.apk`](downloads/VTLOffmp3g-1.5-arm64-v8a.apk) | 48 Mo |
+| **Android** 7+ (Other devices, 32 bits) | [`VTLOffmp3g-1.5-armeabi-v7a.apk`](downloads/VTLOffmp3g-1.5-armeabi-v7a.apk) | 48 Mo |
 | **PC** Windows · macOS · Linux (navigateur) | [`VTLOffmp3g-web-1.5.zip`](downloads/VTLOffmp3g-web-1.5.zip) | 11 Mo |
 
-- **Android** : ouvrez l'APK sur le téléphone et autorisez l'installation depuis cette source.
+- **Android** : ouvrez l'APK sur le device directement et autorisez l'installation depuis cette source.
 - **PC** : décompressez le zip, puis double-cliquez `Lancer-VTLOffmp3g.bat` (Windows) ou lancez `./lancer.sh`
   (macOS / Linux). Le navigateur s'ouvre sur l'application.
 
@@ -39,7 +38,7 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 ## ✨ Fonctionnalités 
 
 - **84 tested runners** en cinq onglets : *Convertir*, *Audio*, *Montage*, *Effets*, *Analyse*.
-- **Montage du quotidien** : vitesse, ralenti fluide, fondus, transitions, formats verticaux 9:16, titres et
+- **Montage Standard** : vitesse, ralenti fluide, fondus, transitions, formats verticaux 9:16, titres et
   bandeaux nom/fonction, incrustation, fond vert, LUT, HDR → SDR, normalisation du volume (LUFS), voix
   nettoyée, musique qui s'efface sous la voix, exports YouTube et Reels/TikTok/Shorts…
 - **Analyse** : infos du fichier, bandes noires, changements de plan, volume EBU R128, silences, qualité
