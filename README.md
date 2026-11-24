@@ -14,8 +14,7 @@
 > Faites faire à FFmpeg tout ce dont vous avez besoin, sans taper une seule commande.
 
 VTLOffmp3g est **la façon la plus simple d'utiliser FFmpeg** : les commandes essentielles de la
-[cheatsheet FFmpeg](tools/ffmpeg.sh) et les travaux de montage du quotidien deviennent **84 recettes prêtes à
-l'emploi**, sur téléphone Android comme sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
+[cheatsheet FFmpeg](tools/ffmpeg.sh) et les travaux de montage du quotidien deviennent **84 runners ready to use**, sur téléphone Android comme sur PC. Vous choisissez un fichier, vous réglez deux paramètres, vous lancez : **tout se passe sur votre
 appareil, hors ligne, sans envoyer un seul octet sur Internet**. Et pour ceux qui veulent garder la main, la
 commande FFmpeg reste visible et modifiable à chaque étape.
 
@@ -39,7 +38,7 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 
 ## ✨ Fonctionnalités 
 
-- **84 recettes** en cinq onglets : *Convertir*, *Audio*, *Montage*, *Effets*, *Analyse*.
+- **84 tested runners** en cinq onglets : *Convertir*, *Audio*, *Montage*, *Effets*, *Analyse*.
 - **Montage du quotidien** : vitesse, ralenti fluide, fondus, transitions, formats verticaux 9:16, titres et
   bandeaux nom/fonction, incrustation, fond vert, LUT, HDR → SDR, normalisation du volume (LUFS), voix
   nettoyée, musique qui s'efface sous la voix, exports YouTube et Reels/TikTok/Shorts…
@@ -64,9 +63,9 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 4. **Lancez** : la jauge, la télémétrie et le journal se mettent à jour en direct.
 5. **Récupérez le résultat** : enregistrer, partager, ouvrir ou télécharger.
 
-## 🎬 Les 84 recettes
+## 🎬 Les 84 automated runners 
 
-| Onglet | Catégorie | Recettes |
+| Onglet | Catégorie | Automate |
 |---|---|---|
 | **Convertir** | **Conversion** | Tout format → MP4 (H.264 + AAC) · MP4 → WebM (VP9 + Opus) · MP4 → WebM (VP8, presets libvpx) · Remux sans réencodage |
 | | **Compression** | Compression CRF · Preset lent (fichier plus petit) · Encodage deux passes (débit cible) |
@@ -83,10 +82,6 @@ Instructions détaillées et empreintes SHA-256 : [`downloads/`](downloads/).
 | | **Analyse** *(nouveau)* | Infos du fichier · Détecter les bandes noires · Détecter les changements de plan · Mesurer le volume (EBU R128) · Trouver les silences · Comparer la qualité (SSIM / PSNR) |
 | | **Libre** | Commande FFmpeg personnalisée |
 
-Les recettes *nouvelles* reprennent les fonctions de [ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill)
-réalisables avec FFmpeg seul (sans Python ni IA), adaptées pour tourner à l'identique sur Android et dans le
-navigateur.
-
 ## 🗂️ Organisation
 
 | Dossier | Contenu |
@@ -102,7 +97,7 @@ Les recettes sont définies une seule fois, dans
 [`Recipe.java`](apps/VTLOffmp3g/app/src/main/java/com/vtlo/offmp3g/Recipe.java) ; l'application web les exporte
 de là au moment de sa construction.
 
-## 🛠️ Construire
+## 🛠️ Build it
 
 **Android** (JDK 17+, Android SDK, `patchelf`) :
 
@@ -128,10 +123,7 @@ Détails : [`apps/VTLOffmp3g/README.md`](apps/VTLOffmp3g/README.md) et
 VTLOffmp3g est distribué sous **GNU GPL v3** ([`LICENSE`](LICENSE)) : FFmpeg, tel qu'il est embarqué
 (FFmpegKit full-gpl sur Android, ffmpeg.wasm sur PC, tous deux avec x264), est lui-même sous GPL.
 
-- [`tools/ffmpeg.sh`](tools/ffmpeg.sh) provient d'[awesome-cheatsheets](https://github.com/LeCoupa/awesome-cheatsheets),
-  sous licence MIT ([`tools/LICENSE-ffmpeg.sh.txt`](tools/LICENSE-ffmpeg.sh.txt)).
-- Recettes inspirées d'[ffmpeg-skill](https://github.com/kajisho5/ffmpeg-skill) (licence MIT) : commandes
-  réécrites pour VTLOffmp3g, aucun fichier repris.
-- Police DejaVu Sans (version PC) : licence Bitstream Vera.
+- Les scripts automatisés ont étés écrits entière par moi-même pour le projet VTLOffmp3g, aucun fichier "tel quel" n'a été repris.
+- Fonts DejaVu Sans (version PC) : licence Bitstream Vera.
 
 <p align="center"><sub>ɔ copyleft · GPL-3.0 · VTLO</sub></p>
